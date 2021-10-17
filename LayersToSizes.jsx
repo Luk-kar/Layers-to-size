@@ -1,23 +1,27 @@
 function LayersToSizes() {
     var doc = app.activeDocument;
     var docPath = doc.path;
-    
-    var sizes = []
 
-    //readconfig
+    var sizes = getConfigValue();
+
+    for (var i = 0; i < sizes.length; i++) {
+        alert(sizes[i])
+    }
 }
 
 function getConfigPath() {
-    var configFileName = "config.ini";
-    var root = (new File($.fileName)).toString().replace(/\\/g, '/') + "/";
+    var configFileName = "config.csv";
+    var filePath = decodeURI(($.fileName));
+    var root = filePath.match(/(.*)[\/\\]/)[1]||'';
 
-    var congiFilePath = root + configFileName;
-    return congiFilePath;
+    var configFilePath = root + "/" + configFileName;
+
+    return configFilePath;
 }
 
 function getConfigFile() {
     var configFilePath = getConfigPath();
-
+    alert(configFilePath)
     var configFile = new File(configFilePath);
     return configFile;
 }
@@ -42,7 +46,7 @@ function getValues(FileIni) {
         var line = FileIni.readln();
 
         if (line.search(columsNamesRow) !== 0) {
-            values.push(line)
+            values.push(line.split(","))
         }
     }
 
