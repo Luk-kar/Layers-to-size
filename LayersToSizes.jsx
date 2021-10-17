@@ -1,12 +1,33 @@
 function LayersToSizes() {
+
+    var sevedAppOptions = app.displayDialogs;
+    app.displayDialogs = DialogModes.NO;
+
     var doc = app.activeDocument;
     var docPath = doc.path;
+    var filePath = doc.fullName
 
     var sizes = getConfigValue();
 
+    doc.close();
+
     for (var i = 0; i < sizes.length; i++) {
-        alert(sizes[i])
+        var reopenedFile = app.open(new File(filePath))
+
+        var newSize = sizes[i]
+
+        var folderSizeName = newSize[0]
+        var width = newSize[1]
+        var height = newSize[2]
+
+        var unit = "px"
+
+        reopenedFile.resizeImage(UnitValue(width, unit), UnitValue(height, unit), undefined, ResampleMethod.BICUBICSHARPER)
+        reopenedFile.close()
     }
+
+    app.open(new File(filePath))
+    app.displayDialogs = sevedAppOptions;
 }
 
 function getConfigPath() {
@@ -21,8 +42,8 @@ function getConfigPath() {
 
 function getConfigFile() {
     var configFilePath = getConfigPath();
-    alert(configFilePath)
     var configFile = new File(configFilePath);
+
     return configFile;
 }
 
