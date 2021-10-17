@@ -1,0 +1,7 @@
+type size,width,height
+drawable-hdpi,162,162
+drawable-ldpi,81,81
+drawable-mdpi,108,108
+drawable-xhdpi,216,216
+drawable-xxhdpi,324,324
+drawable-xxxhdpi,432,432
