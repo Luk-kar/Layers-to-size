@@ -64,19 +64,15 @@ function saveLayersToPngs(folderSizeName) {
     var layersToPngs = doc.artLayers;
 
     for (k = 0; k < layersToPngs.length; k++) {
-        // make all layers invible
-        for (var i = 0; i < layersToPngs.length; i++) {
-            var layer = layersToPngs[i];
-            layer.visible = false;
-        }
-        // layer name
-        var layer = layersToPngs[k];
 
+        makeAllLayersInvible(layersToPngs);
+
+        var layer = layersToPngs[k];
         layer.visible = true;
         var fileName = layer.name;
 
-        //create folder
-        var newFolder = new Folder(file.docDir + "/" + folderSizeName);
+        var folderPath = file.docDir + "/" + folderSizeName
+        var newFolder = new Folder(folderPath);
 
         if (!newFolder.exists) {
             newFolder.create();
@@ -84,13 +80,17 @@ function saveLayersToPngs(folderSizeName) {
             newFolder.remove();
         }
 
-        // layer visible = true
-        var newFilePath = file.docDir + "/" + folderSizeName + "/" + fileName + ".png";
-
+        var newFilePath = folderPath + "/" + fileName + ".png";
         var pngFile = File(newFilePath);
         pngSaveOptions = new PNGSaveOptions();
-
         doc.saveAs(pngFile, pngSaveOptions, true, Extension.LOWERCASE);
+    }
+}
+
+function makeAllLayersInvible(layersToPngs) {
+    for (var i = 0; i < layersToPngs.length; i++) {
+        var layer = layersToPngs[i];
+        layer.visible = false;
     }
 }
 
