@@ -4,26 +4,29 @@ function LayersToSizes() {
     var appOptionsToRestore = app.displayDialogs;
     app.displayDialogs = DialogModes.NO;
 
-    var currentFileToExportToSizes = app.activeDocument;
-    currentFileToExportToSizes.close();
+    var doc = app.activeDocument;
+    var fileData = getFileData(doc)
+    doc.close();
 
-    var filePath = setFileToPngs();
+    setFileToPngs(fileData);
 
-    app.open(new File(filePath))
+    app.open(new File(fileData.filePath))
     app.displayDialogs = appOptionsToRestore;
 }
 
-function setFileToPngs() {
+function getFileData(doc) {
+    return {
+        docDir: doc.path,
+        filePath: doc.fullName
+    };
+}
 
-    var doc = app.activeDocument;
-
-    var docDir = doc.path;
-    var filePath = doc.fullName;
+function setFileToPngs(file) {
 
     var sizes = getConfigValue();
 
     for (var j = 0; j < sizes.length; j++) {
-        var reopenedFile = app.open(new File(filePath));
+        var reopenedFile = app.open(new File(file.filePath));
 
         var newSize = sizes[j];
 
@@ -52,14 +55,16 @@ function setFileToPngs() {
             var fileName = layer.name;
 
             //create folder
-            var newFolder = new Folder(docDir + "/" + folderSizeName);
+            var newFolder = new Folder(file.docDir + "/" + folderSizeName);
 
             if (!newFolder.exists) {
                 newFolder.create();
+            } else {
+                newFolder.remove();
             }
 
             // layer visible = true
-            var newFilePath = docDir + "/" + folderSizeName + "/" + fileName + ".png";
+            var newFilePath = file.docDir + "/" + folderSizeName + "/" + fileName + ".png";
 
             var pngFile = File(newFilePath);
             pngSaveOptions = new PNGSaveOptions();
@@ -67,9 +72,8 @@ function setFileToPngs() {
             reopenedFile.saveAs(pngFile, pngSaveOptions, true, Extension.LOWERCASE);
         }
 
-        reopenedFile.close();
+        reopenedFile.close(SaveOptions.DONOTSAVECHANGES);
     }
-    return filePath;
 }
 
 function getConfigPath() {
