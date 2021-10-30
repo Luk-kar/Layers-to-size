@@ -1,4 +1,4 @@
-#include "./helpers/isActiveDocument.jsx"
+#include "./helpers/checkConditionsForScript/checkConditionsForScript.jsx"
 #include "./helpers/setAppConfigurationToRunScript.jsx"
 #include "./helpers/getCurrentFileData.jsx"
 #include "./helpers/setFileToPngs/setFileToPngs.jsx"
@@ -6,9 +6,9 @@
 #include "./helpers/informClientAboutSuccess.jsx"
 
 function setLayersToSizes() {
-    if(!isActiveDocument()){
-        alert("You do not choose any file!")
-        return
+
+    if(!checkConditionsForScript()) {
+        return // terminate script
     }
 
     var appOptionsToRestore = setAppConfigurationToRunScript();
