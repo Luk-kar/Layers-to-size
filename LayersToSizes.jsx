@@ -3,12 +3,12 @@ function LayersToSizes() {
     var appOptionsToRestore = setAppConfigurationToRunScript();
 
     var doc = app.activeDocument;
-    var fileData = getFileData(doc)
+    var docData = getCurrentFileData(doc)
     doc.close();
 
-    setFileToPngs(fileData);
+    setFileToPngs(docData);
 
-    restoreStartingConfiguration(fileData, appOptionsToRestore);
+    restoreStartingConfiguration(docData, appOptionsToRestore);
     informClientAboutSuccess();
 }
 
@@ -18,9 +18,9 @@ function informClientAboutSuccess() {
     alert("You have successfully saved layers to desired pngs\n" + docDir);
 }
 
-function restoreStartingConfiguration(fileData, appOptionsToRestore) {
+function restoreStartingConfiguration(docData, appOptionsToRestore) {
 
-    app.open(new File(fileData.filePath));
+    app.open(new File(docData.filePath));
     app.displayDialogs = appOptionsToRestore;
 }
 
@@ -32,7 +32,8 @@ function setAppConfigurationToRunScript() {
     return appOptionsToRestore;
 }
 
-function getFileData(doc) {
+function getCurrentFileData(doc) {
+    var doc = app.activeDocument;
     return {
         docDir: doc.path,
         filePath: doc.fullName
@@ -43,25 +44,23 @@ function setFileToPngs(file) {
 
     var sizes = getConfigValue();
 
-    for (var j = 0; j < sizes.length; j++) {
+    for (var i = 0; i < sizes.length; i++) {
 
-        var reopenedFile = app.open(new File(file.filePath));
-        var newSize = sizes[j];
-
+        var doc = app.open(new File(file.filePath));
+        var newSize = sizes[i];
         var folderSizeName = newSize[0];
 
-        setNewSize(reopenedFile, newSize);
-
+        setNewSize(doc, newSize);
         saveLayersToPngs(folderSizeName);
 
-        reopenedFile.close(SaveOptions.DONOTSAVECHANGES);
+        doc.close(SaveOptions.DONOTSAVECHANGES);
     }
 }
 
 function saveLayersToPngs(folderSizeName) {
 
     var doc = app.activeDocument
-    var file = getFileData(doc)
+    var file = getCurrentFileData(doc)
     var layersToPngs = doc.artLayers;
 
     for (k = 0; k < layersToPngs.length; k++) {
