@@ -3,20 +3,17 @@
 <div align="center">📁📁📁</div>
 
 <div align="center">
-</br>Save layers in PSD to respective PNGs files according to config file</br>
+</br>Save layers in PSD to respective PNGs files according to the config file</br>
 </div>
 <div align="center"><i>
 Important! Tested and created for Photshop CS6 64bit Version: 13.0 on Windows 10</br></br>
 </i></div>
-
-![How the program works](docs/images/How_it_works.png) //todo
-
-![Write colors from layers to CSV file](docs/images/1-Write-colors-from-layers-to-CSV-file.gif) //todo
+<div style="text-align:center"><img src="docs/images/How_it_works.gif" /></div>
 
 ## Getting Started 💡
 
-All layers in chosen PSD are converted to PNGs with respecting sizes.
-Sizes are kept in config.csv in the script directory.
+All layers in chosen PSD are converted to PNGs with respecting sizes
+Sizes are kept in config.csv in the script directory
 
 ### How config.csv works:
 |      type size       |         width        |        height        |
